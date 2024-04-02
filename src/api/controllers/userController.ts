@@ -97,7 +97,7 @@ const userPutCurrent = async (
 
 const userDeleteCurrent = async (
   req: Request<{}, {}, {}>,
-  res: Response<MessageResponse, {user: UserOutput}>,
+  res: Response<MessageResponse & {data: UserOutput}, {user: UserOutput}>,
   next: NextFunction
 ) => {
   try {
@@ -110,7 +110,7 @@ const userDeleteCurrent = async (
     if (!user) {
       throw new CustomError('No user found', 404);
     }
-    res.json({message: 'User deleted'});
+    res.json({message: 'User deleted', data: user});
   } catch (error) {
     next(error);
   }
@@ -125,7 +125,6 @@ const checkToken = async (
     if (!res.locals.user) {
       throw new CustomError('Not authorized', 401);
     }
-    authenticate(req, res, next);
     const user: Partial<User> = {...res.locals.user};
     delete user.role;
 

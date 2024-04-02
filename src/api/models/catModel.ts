@@ -11,7 +11,7 @@ const catSchema = new mongoose.Schema<Cat>({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
+    ref: 'User',
     required: [true, 'Owner is required'],
   },
   filename: {

@@ -26,7 +26,8 @@ const catGetByUser = async (
     }
     const cats = await catModel
       .find({owner: res.locals.user._id})
-      .select('-__V');
+      .select('-__v')
+      .populate('owner', '-__v -password -role');
     res.json(cats);
   } catch (error) {
     next(error);
@@ -43,13 +44,15 @@ const catGetByBoundingBox = async (
     const rightCorner = topRight.split(',');
     const leftCorner = bottomLeft.split(',');
 
-    const cats = await catModel.find({
-      location: {
-        $geoWithin: {
-          $box: [[leftCorner, rightCorner]],
+    const cats = await catModel
+      .find({
+        location: {
+          $geoWithin: {
+            $box: [leftCorner, rightCorner],
+          },
         },
-      },
-    });
+      })
+      .populate('owner', '-__v -password -role');
     res.json(cats);
   } catch (error) {
     next(error);
@@ -62,9 +65,9 @@ const catPutAdmin = async (
   next: NextFunction
 ) => {
   try {
-    // if (res.locals.user.role !== 'admin') {
-    //   throw new CustomError('Not authorized', 401);
-    // }
+    if (res.locals.user.role !== 'admin') {
+      throw new CustomError('Not authorized', 401);
+    }
     const cat = await catModel.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
@@ -172,7 +175,10 @@ const catGet = async (
   next: NextFunction
 ) => {
   try {
-    const cat = await catModel.findById(req.params.id).select('-__v');
+    const cat = await catModel
+      .findById(req.params.id)
+      .select('-__v')
+      .populate('owner', '-__v -password -role');
     if (!cat) {
       throw new Error('No cats found');
     }
@@ -184,11 +190,14 @@ const catGet = async (
 
 const catListGet = async (
   req: Request,
-  res: Response<Cat[], {user: UserOutput}>,
+  res: Response<Cat[]>,
   next: NextFunction
 ) => {
   try {
-    const cats = await catModel.find().select('-__v');
+    const cats = await catModel
+      .find()
+      .select('-__v')
+      .populate('owner', '-__v -password -role');
     res.json(cats);
   } catch (error) {
     next(error);

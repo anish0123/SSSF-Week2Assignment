@@ -13,7 +13,6 @@ const getCat = (url: string | Function): Promise<Cat[]> => {
           reject(err);
         } else {
           const cats: Cat[] = response.body;
-          console.log('cats: ', cats);
           cats.forEach((cat) => {
             expect(cat).toHaveProperty('_id');
             expect(cat).toHaveProperty('cat_name');
