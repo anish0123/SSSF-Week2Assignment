@@ -7,7 +7,8 @@ import {
   userPost,
   userPutCurrent,
 } from '../controllers/userController';
-import {authenticate} from '../../middlewares';
+import {authenticate, validationErrors} from '../../middlewares';
+import {param} from 'express-validator';
 
 const router = express.Router();
 
@@ -20,6 +21,8 @@ router
 
 router.get('/token', authenticate, checkToken);
 
-router.route('/:id').get(userGet);
+router
+  .route('/:id')
+  .get(param('id').isMongoId().notEmpty(), validationErrors, userGet);
 
 export default router;

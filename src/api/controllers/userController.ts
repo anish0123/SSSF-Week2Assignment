@@ -12,7 +12,6 @@ import {MessageResponse} from '../../types/MessageTypes';
 import userModel from '../models/userModel';
 import CustomError from '../../classes/CustomError';
 import bcrypt from 'bcrypt';
-import {authenticate} from '../../middlewares';
 
 const userListGet = async (
   req: Request,
