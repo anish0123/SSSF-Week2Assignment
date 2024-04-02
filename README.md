@@ -1,4 +1,4 @@
-# SSSF week 2 exercise. Submit to Oma
+# SSSF week 2 exercise.
 
 Convert the REST API from last weeks assignment to use MongoDB and Mongoose
 
@@ -9,10 +9,6 @@ Convert the REST API from last weeks assignment to use MongoDB and Mongoose
 - `npm i` to install dependencies
 - `npm run dev` to start development server
 - `npm run test` to run tests
-
-## Assignment
-
-- Your task is to complete all TODOs in the code until all tests are passed
 
 ## Database
 
