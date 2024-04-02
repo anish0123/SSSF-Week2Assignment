@@ -28,7 +28,7 @@ const errorHandler = (
   res: Response<ErrorResponse>,
   next: NextFunction
 ) => {
-  console.error('errorHandler', err.message);
+  // console.error('errorHandler', err.message);
   res.status(err.status || 500);
   res.json({
     message: err.message,
